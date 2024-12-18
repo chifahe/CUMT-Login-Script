@@ -1,19 +1,27 @@
 # CUMT-Login-Script
 
-该脚本用于在您的操作系统上安装/卸载自动登录校园网脚本，目前仅支持 Windows 系统。  
-**脚本很容易被篡改，因此使用前请确保其中没有窃取您的账户和密码的内容！**
+## 本人已长期不在学校，无法测试该脚本，故归档该仓库。如有需要，或后续学校登录系统有变动，欢迎 fork 后继续开发！🥰
 
-`iOS`、`iPadOS`和`macOS`的登录脚本请见[J1an](https://github.com/Jlan45)大佬的[快捷指令]()
+该脚本用于在您的操作系统上安装/卸载自动登录校园网脚本，目前支持 Windows 和 Linux。<br>
+**_脚本很容易被篡改，因此使用前请确保其中没有窃取您的账户和密码的内容！_**
+
+iOS、iPadOS 和 macOS 的登录脚本可以试试[J1an](https://github.com/Jlan45)大佬的[快捷指令](https://www.icloud.com/shortcuts/75b60062ac5e4d6c970bcf8f0e89be5e)。
+
+## 优点
+
+1. 使用的是 crontab 来设置定时任务，所以 OpenWrt 也可以用。
+2. 该脚本无需任何依赖（一般 Linux 发行版都有 crontab 吧…？）、体积小、而且源码完全开放，相比手动登录和发行的登录软件个人认为有相当的优势。
+3. 全程**无需**管理员/root 用户权限。
 
 ## 使用方法
 
 ### Windows
 
-下载`setup-windows.bat`文件到本地，双击执行。
+下载`setup-windows.bat`文件到设备上，并执行。
 
-### OpenWrt
+### Linux
 
-将`setup-openwrt.sh`上传到路由器，在终端里执行。
+下载`setup-linux.sh`文件到设备上，并在终端里执行。
 
 ## 原理
 
@@ -21,10 +29,9 @@
 
 ### Windows
 
--   在`%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\`文件夹下，创建`CUMT-Login-Script.bat`文件，实现开机自启功能。
--   用`schtasks`指令添加一个每天早上 7:15 执行登录脚本的计划任务。
+-   在`%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\`文件夹下，创建`CUMT-Login-Script.bat`文件，实现开机自启。
+-   用 schtasks 指令添加一个每天早上 7:15 执行登录脚本的计划任务。
 
-### OpenWrt
+### Linux
 
--   向`/etc/crontabs/root`文件中写入一个每天早上 7:15 执行的登录校园网指令。
--   目前还不支持自动删除，但是在该指令前后都写了明显的注释，不需要时自行删除或注释掉即可。
+-   用 crontab 实现开机 1 分钟后 和 每天早上 7:15 执行登录校园网指令。ƒ

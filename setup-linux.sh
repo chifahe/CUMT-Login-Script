@@ -1,1 +1,45 @@
-# NOTE: 还没写呢，不过原理应该和openwrt的差不多
+echo 该脚本是Linux下校园网自动登录脚本的安装程序。
+echo 安装时会询问您的账户、密码和运营商，因此请注意不要随便使用从不明渠道下载的该脚本。
+echo 如果需要卸载自动登录脚本，只需要再次执行该脚本即可。
+
+echo 请输入账号：
+read account
+
+echo 请输入密码：
+read password
+
+echo 您的运营商是？（请输入选项前的数字）
+options=("电信" "移动" "联通")
+select opt in ${options[@]}; do
+    case $opt in
+    "电信")
+        operator=telecom
+        break
+        ;;
+    "移动")
+        operator=cmcc
+        break
+        ;;
+    "联通")
+        operator=unicom
+        break
+        ;;
+    *) echo 不存在该选项 ;;
+    esac
+done
+
+# 向crontab配置文件中写入脚本
+file="~/CUMT-Login-Script.cron"
+cat >$file <<EOF
+@reboot sleep 60 && curl "http://10.2.5.251:801/eportal/?c=Portal&a=login&login_method=1&user_account=${account}%40${operator}&user_password=${password}" # CUMT-Login-Script
+15 7 * * * curl "http://10.2.5.251:801/eportal/?c=Portal&a=login&login_method=1&user_account=${account}%40${operator}&user_password=${password}" # CUMT-Login-Script
+EOF
+crontab $file
+
+echo 安装完成！
+
+# 删除
+sed -i '/CUMT-Login-Script/d' /var/spool/cron/$user
+
+# 判断用户
+user=${SUDO_USER:-$LOGNAME}
