@@ -2,6 +2,7 @@
 
 SET file="%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\CUMT-Login-Script.bat"
 
+@REM 判断是否已经安装脚本
 IF EXIST %file% (
     CHOICE /M "请问您要卸载该脚本吗？（是请输入 Y，否则 N）"
     IF ERRORLEVEL 2 EXIT
